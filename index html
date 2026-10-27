@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Bestie! 🎉🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Poppins:wght@400;600;700&family=Caveat:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #a1c4fd 100%);
+      min-height: 100vh;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+      overflow-x: hidden;
+    }
+
+    /* Floating Background Emojis */
+    .bg-emoji {
+      position: fixed;
+      font-size: 24px;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatAnim 6s linear infinite;
+      opacity: 0.6;
+    }
+
+    @keyframes floatAnim {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    /* App Container */
+    .app-card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 28px;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      padding: 25px 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h1.title {
+      font-family: 'Fredoka', cursive;
+      color: #ff4757;
+      font-size: 2.2rem;
+      margin-bottom: 5px;
+      text-shadow: 2px 2px 0px #fff;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    /* Tab Navigation */
+    .nav-tabs {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 6px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      padding: 10px 5px;
+      border-radius: 15px;
+      font-family: 'Fredoka', cursive;
+      font-size: 0.85rem;
+      cursor: pointer;
+      background: transparent;
+      color: #666;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      background: #ff4757;
+      color: white;
+      box-shadow: 0 4px 10px rgba(255, 71, 87, 0.3);
+    }
+
+    /* Sections */
+    .section {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Birthday Cake Section */
+    .cake-box {
+      margin: 20px 0;
+      cursor: pointer;
+    }
+
+    .cake-emoji {
+      font-size: 90px;
+      transition: transform 0.3s;
+      display: inline-block;
+    }
+
+    .cake-emoji:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, #ff4757, #ff6b81);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-family: 'Fredoka', cursive;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .btn-action:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Mini Games Area */
+    .game-card {
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border: 2px solid #ffeaa7;
+    }
+
+    .game-title {
+      font-family: 'Fredoka', cursive;
+      color: #ff6b6b;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+    }
+
+    .quiz-opt {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .quiz-btn {
+      background: #f1f2f6;
+      border: 2px solid #dfe4ea;
+      padding: 10px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-btn:hover {
+      background: #ff70a6;
+      color: white;
+      border-color: #ff70a6;
+    }
+
+    /* Joke Generator Box */
+    .joke-box {
+      background: #fff9e6;
+      border: 2px dashed #ffeaa7;
+      border-radius: 18px;
+      padding: 15px;
+      margin: 15px 0;
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      color: #d63031;
+    }
+
+    /* Whack a Mole Game Grid */
+    .mole-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .mole-hole {
+      background: #eccc68;
+      height: 75px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: inset 0 5px 5px rgba(0,0,0,0.15);
+    }
+
+    /* Wish Book */
+    .letter-text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      line-height: 1.5;
+      color: #2f3542;
+      text-align: left;
+      background: #fff;
+      padding: 20px;
+      border-radius: 18px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+      border-left: 5px solid #ff4757;
+    }
+
+    /* Music Floating Button */
+    .music-float {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 100;
+      background: white;
+      border: 2px solid #ff4757;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Music Button -->
+  <button class="music-float" onclick="toggleMusic()" id="musicBtn">🎵</button>
+  <audio id="bgMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a731ef.mp3?filename=soft-piano-10871.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- App Card -->
+  <div class="app-card">
+    <h1 class="title">Happy Birthday! 🎉</h1>
+    <div class="subtitle">Spesial Web Hadiah Buat Cewek Ter-Paling Hits! 💅✨</div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('cakeTab')">🎂 Tiup Lilin</button>
+      <button class="tab-btn" onclick="switchTab('jokeTab')">😂 Jokes</button>
+      <button class="tab-btn" onclick="switchTab('gameTab')">🎮 Mini Game</button>
+      <button class="tab-btn" onclick="switchTab('wishTab')">💌 Ucapan</button>
+    </div>
+
+    <!-- TAB 1: CAKE -->
+    <div id="cakeTab" class="section active">
+      <div class="cake-box" onclick="blowCandle()">
+        <div class="cake-emoji" id="cakeEmoji">🎂</div>
+      </div>
+      <p style="margin-bottom: 15px; font-weight: 600; color: #57606f;" id="cakeStatus">Klik atau sentuh kuenya buat niup lilin! 🕯️</p>
+      <button class="btn-action" onclick="blowCandle()">Tiup Lilin Sekarang! 🥳</button>
+    </div>
+
+    <!-- TAB 2: JOKES & LELUCON -->
+    <div id="jokeTab" class="section">
+      <h2 class="game-title">Zona Candaan & Lelucon 🤣</h2>
+      <p style="font-size: 0.85rem; color: #747d8c;">Klik tombol di bawah buat dapet kata-kata lelucon khusus ulang tahun!</p>
+      <div class="joke-box" id="jokeText">Klik tombol di bawah buat kocak-kocakan! 👇</div>
+      <button class="btn-action" onclick="generateJoke()">Acak Lelucon 🎲</button>
+    </div>
+
+    <!-- TAB 3: MINI GAMES -->
+    <div id="gameTab" class="section">
+      <!-- Game 1: Whack a Kado -->
+      <div class="game-card">
+        <div class="game-title">1. Tangkap Kado Terbang! 🎁</div>
+        <p style="font-size: 0.8rem; color: #666;">Klik kado yang muncul! Skor: <span id="scoreText" style="font-weight:700; color:#ff4757;">0</span></p>
+        <div class="mole-grid">
+          <div class="mole-hole" onclick="hitMole(0)">🕳️</div>
+          <div class="mole-hole" onclick="hitMole(1)">🕳️</div>
+          <div class="mole-hole" onclick="hitMole(2)">🕳️</div>
+          <div class="mole-hole" onclick="hitMole(3)">🕳️</div>
+          <div class="mole-hole" onclick="hitMole(4)">🕳️</div>
+          <div class="mole-hole" onclick="hitMole(5)">🕳️</div>
+        </div>
+      </div>
+
+      <!-- Game 2: Kuis Teman -->
+      <div class="game-card">
+        <div class="game-title">2. Kuis Ulang Tahun 🧐</div>
+        <p style="font-size: 0.85rem; font-weight: 600;">Apa kado terbaik buat kamu hari ini?</p>
+        <div class="quiz-opt">
+          <button class="quiz-btn" onclick="quizAns(1)">Uang tunai 10 Miliar 💵</button>
+          <button class="quiz-btn" onclick="quizAns(2)">Makanan enak sepuasnya 🍕</button>
+          <button class="quiz-btn" onclick="quizAns(3)">Teman sejati kaya aku 🤪</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: UCAPAN & DOA -->
+    <div id="wishTab" class="section">
+      <div class="letter-text">
+        Happy Birthday bestieee!! 🎉🎂<br><br>
+        Selamat bertambah umur ya! Semoga di usiamu yang baru ini kamu makin sukses, makin cantik, makin bahagia, dan semua cita-citamu bisa tercapai!<br><br>
+        Makasih ya udah jadi temen yang seru, selalu ada, dan bisa diajak gila bareng. Tetap jadi diri kamu yang ceria dan menyenangkan ya!<br><br>
+        Jangan lupa makan-makan sama traktirannya ditunggu! 🤪✨
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Background Emojis
+    const emojis = ['🎈', '🎂', '🎁', '✨', '🎉', '👑', '💖'];
+    for(let i=0; i<20; i++) {
+      let el = document.createElement('div');
+      el.className = 'bg-emoji';
+      el.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+      el.style.left = Math.random()*100 + 'vw';
+      el.style.animationDuration = (Math.random()*4 + 4) + 's';
+      el.style.animationDelay = Math.random()*5 + 's';
+      document.body.appendChild(el);
+    }
+
+    // Music
+    let isMusic = false;
+    function toggleMusic() {
+      let audio = document.getElementById('bgMusic');
+      let btn = document.getElementById('musicBtn');
+      if(isMusic) {
+        audio.pause(); btn.innerText = '🔇'; isMusic = false;
+      } else {
+        audio.play(); btn.innerText = '🎵'; isMusic = true;
+      }
+    }
+
+    // Switch Tab
+    function switchTab(tabId) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.target.classList.add('active');
+    }
+
+    // Blow Candle
+    let blown = false;
+    function blowCandle() {
+      if(!blown) {
+        document.getElementById('cakeEmoji').innerText = '🍰';
+        document.getElementById('cakeStatus').innerText = 'Yeay! Lilinnya udah ditiup! Semoga semua doamu terkabul! ✨🎉';
+        confetti({ particleCount: 120, spread: 80 });
+        blown = true;
+      } else {
+        confetti({ particleCount: 50, spread: 60 });
+      }
+    }
+
+    // Jokes
+    const jokes = [
+      "Selamat ulang tahun! Makin tua makin berwibawa, tapi jangan makin pelit traktirannya ya! 🤪",
+      "Tambah umur itu cuma angka, yang penting jiwanya tetap kaya bocah! Happy Birthday! 🎉",
+      "Doaku simpel: Semoga muka kamu tetep glowing, dompet tetep tebel, dan tetep sabar temenan sama aku! 😂",
+      "Selamat makin tua! Ingat, pusing karena beban hidup itu wajar, yang penting tetep estetik! ✨",
+      "Met ultah! Semoga cita-citamu tercapai, salah satunya cita-cita jadi orang kaya tanpa kerja keras! 💸"
+    ];
+    function generateJoke() {
+      let randomJoke = jokes[Math.floor(Math.random()*jokes.length)];
+      document.getElementById('jokeText').innerText = randomJoke;
+      confetti({ particleCount: 30, spread: 50 });
+    }
+
+    // Whack a Mole
+    let molePos = -1;
+    let score = 0;
+    function spawnMole() {
+      let holes = document.querySelectorAll('.mole-hole');
+      holes.forEach(h => h.innerText = '🕳️');
+      molePos = Math.floor(Math.random()*6);
+      holes[molePos].innerText = '🎁';
+    }
+    setInterval(spawnMole, 1200);
+
+    function hitMole(idx) {
+      if(idx === molePos) {
+        score += 10;
+        document.getElementById('scoreText').innerText = score;
+        document.querySelectorAll('.mole-hole')[idx].innerText = '💥';
+        molePos = -1;
+      }
+    }
+
+    // Quiz
+    function quizAns(option) {
+      if(option === 3) {
+        confetti({ particleCount: 100, spread: 70 });
+        alert("BENER BANGET! Teman sejati kaya aku adalah kado terindah & tak ternilai harganya! 🤪✨");
+      } else {
+        alert("Jawaban yang bagus, tapi opsi nomor 3 tetep yang paling bener! 😜");
+      }
+    }
+  </script>
+</body>
+</html>
